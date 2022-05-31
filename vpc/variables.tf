@@ -31,6 +31,10 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+variable "EC2_sg" {
+  default     = "EC2_sg security group"
+}
+
 #Variables for Network
 variable "cidr_block" {
   description = "The CIDR block of network"

@@ -1,3 +1,4 @@
+# Create instance Bastion server
 resource "aws_instance" "bastion_server" {
   count         = local.number_bastion_servers
   ami           = data.aws_ami.ubuntu.id
@@ -16,6 +17,7 @@ resource "aws_instance" "bastion_server" {
   }
 }
 
+# Security group for Bastion server
 resource "aws_security_group" "sg_bastion_server" {
   vpc_id = aws_vpc.vpc.id
 

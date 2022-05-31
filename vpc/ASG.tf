@@ -1,3 +1,4 @@
+# Launch Configuration for Autoscaling Group
 resource "aws_launch_configuration" "EC2" {
   image_id        = data.aws_ami.ubuntu.id
   instance_type   = var.instance_type
@@ -13,6 +14,7 @@ resource "aws_launch_configuration" "EC2" {
   }
 }
 
+# Autoscaling Group
 resource "aws_autoscaling_group" "EC2_asg" {
   count      = local.number_public_subnets
   vpc_zone_identifier  = [aws_subnet.public_subnet[count.index].id]
@@ -29,9 +31,10 @@ resource "aws_autoscaling_group" "EC2_asg" {
   }
 }
 
+# Security Group for Autoscaling Group
 resource "aws_security_group" "EC2_sg" {
   vpc_id = aws_vpc.vpc.id
-  name   = "instance security group"
+  name   = var.EC2_sg
   dynamic "ingress" {
     for_each = var.ports
     content {
@@ -58,6 +61,7 @@ resource "aws_security_group" "EC2_sg" {
   }
 }
 
+# Attachment for Load Balancer
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
   count      = local.number_public_subnets
   autoscaling_group_name = aws_autoscaling_group.EC2_asg[count.index].id

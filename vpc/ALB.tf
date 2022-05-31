@@ -1,4 +1,4 @@
-#Application Load Balancer
+# Application Load Balancer
 resource "aws_alb" "alb" {
   load_balancer_type = "application"
   subnets            = aws_subnet.public_subnet.*.id
@@ -9,7 +9,7 @@ resource "aws_alb" "alb" {
   }
 }
 
-#ALB Listener
+# ALB Listener
 resource "aws_alb_listener" "http" {
   load_balancer_arn = aws_alb.alb.id
   port              = var.app_port
@@ -21,7 +21,7 @@ resource "aws_alb_listener" "http" {
   }
 }
 
-#Security Group for ALB
+# Security Group for ALB
 resource "aws_security_group" "alb" {
   vpc_id = aws_vpc.vpc.id
 
@@ -44,7 +44,7 @@ resource "aws_security_group" "alb" {
   }
 }
 
-#Target Group and Targets for ALB
+# Target Group and Targets for ALB
 resource "aws_alb_target_group" "web_server" {
   port     = var.app_target_port
   protocol = "HTTP"
